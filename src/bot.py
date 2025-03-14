@@ -85,11 +85,13 @@ def run_discord_bot():
             logger.warning("\x1b[31mSwitch to replyAll mode\x1b[0m")
 
 
-    @discordClient.tree.command(name="chat-model", description="Switch the chat model between 'gemini' and 'gpt-4'")
+    @discordClient.tree.command(name="chat-model", description="Switch the chat model between available models")
     @app_commands.choices(model=[
         app_commands.Choice(name="gemini", value="gemini"),
         app_commands.Choice(name="gpt-4", value="gpt-4"),
         app_commands.Choice(name="gpt-3.5-turbo", value="gpt-3.5-turbo"),
+        app_commands.Choice(name="gpt-4-web-search", value="gpt-4o-search-preview"),
+        app_commands.Choice(name="gpt-4-mini-web-search", value="gpt-4o-mini-search-preview"),
     ])
     async def chat_model(interaction: discord.Interaction, model: app_commands.Choice[str]):
         await interaction.response.defer(ephemeral=True)
@@ -141,6 +143,8 @@ def run_discord_bot():
         - `/chat-model` Switch different chat model
                 `gpt-4`: GPT-4 model
                 `Gemini`: Google gemini-pro model
+                `gpt-4-web-search`: GPT-4 with web search capability
+                `gpt-4-mini-web-search`: Smaller GPT-4 model with web search
 
 For complete documentation, please visit:
 https://github.com/Zero6992/chatGPT-discord-bot""")

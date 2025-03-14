@@ -39,6 +39,7 @@ class discordClient(discord.Client):
         self.is_replying_all = os.getenv("REPLYING_ALL")
         self.replying_all_discord_channel_id = os.getenv("REPLYING_ALL_DISCORD_CHANNEL_ID")
         self.openai_client = AsyncOpenAI(api_key=os.getenv("OPENAI_KEY"))
+        self.web_search_models = ["gpt-4o-search-preview", "gpt-4o-mini-search-preview"]
 
         config_dir = os.path.abspath(f"{__file__}/../../")
         prompt_name = 'system_prompt.txt'
@@ -100,20 +101,35 @@ class discordClient(discord.Client):
         self.conversation_history.append({'role': 'user', 'content': user_message})
         if len(self.conversation_history) > 26:
              del self.conversation_history[4:6]
+        
         if os.getenv("OPENAI_ENABLED") == "False":
             async_create = sync_to_async(self.chatBot.chat.completions.create, 
                                          thread_sensitive=True)
             response: ChatCompletion = await async_create(model=self.chatModel, 
                                                           messages=self.conversation_history)
         else:
-            response = await self.openai_client.chat.completions.create(
-                model=self.chatModel,
-                messages=self.conversation_history
-            )
+            # Check if using web search enabled models
+            if self.chatModel in self.web_search_models:
+                response = await self.openai_client.chat.completions.create(
+                    model=self.chatModel,
+                    messages=self.conversation_history,
+                    web_search_options={} # Enable web search
+                )
+                # Format response with citations if present
+                bot_response = response.choices[0].message.content
+                if hasattr(response.choices[0].message, 'annotations'):
+                    for citation in response.choices[0].message.annotations:
+                        if citation.type == 'url_citation':
+                            # Add citation links at the bottom of the message
+                            bot_response += f"\n\nSource: [{citation.url_citation.title}]({citation.url_citation.url})"
+            else:
+                response = await self.openai_client.chat.completions.create(
+                    model=self.chatModel,
+                    messages=self.conversation_history
+                )
+                bot_response = response.choices[0].message.content
 
-        bot_response = response.choices[0].message.content
         self.conversation_history.append({'role': 'assistant', 'content': bot_response})
-
         return bot_response
 
     def reset_conversation_history(self):
