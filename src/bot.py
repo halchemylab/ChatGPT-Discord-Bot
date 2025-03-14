@@ -89,7 +89,6 @@ def run_discord_bot():
     @app_commands.choices(model=[
         app_commands.Choice(name="gemini", value="gemini"),
         app_commands.Choice(name="gpt-4", value="gpt-4"),
-        app_commands.Choice(name="gpt-3.5-turbo", value="gpt-3.5-turbo"),
         app_commands.Choice(name="gpt-4-web-search", value="gpt-4o-search-preview"),
         app_commands.Choice(name="gpt-4-mini-web-search", value="gpt-4o-mini-search-preview"),
     ])
@@ -104,11 +103,7 @@ def run_discord_bot():
                 discordClient.reset_conversation_history()
                 discordClient.chatBot = Client(provider=RetryProvider([Liaobots, You, OpenaiChat, Bing], shuffle=False))
                 discordClient.chatModel = model.value
-            elif model.value == "gpt-3.5-turbo":
-                discordClient.reset_conversation_history()
-                discordClient.chatBot = Client(provider=RetryProvider([FreeGpt, ChatgptNext, AItianhuSpace], shuffle=False))
-                discordClient.chatModel = model.value
-            elif model.value in ["gpt-4o-search-preview", "gpt-4o-mini-search-preview"]:
+            elif model.value == "gpt-4o-search-preview":
                 if os.getenv("OPENAI_ENABLED") != "True":
                     await interaction.followup.send("> **ERROR: Web search models require OpenAI API to be enabled. Please set OPENAI_ENABLED=True in .env**")
                     return
