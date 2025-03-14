@@ -7,6 +7,7 @@
 >
 > **Major Update (2024/03):**
 > - GPT-4 now supported for free
+> - Web search capability added with GPT-4
 > - Utilize OpenAI API can ensure smoother experiences, refer [Optional: Configuring OpenAI API](#optional-configuring-openai-api)
 
 ### Chat
@@ -136,6 +137,9 @@
 * `/chat-model` Switch different chat model
    * `gpt-4`: GPT-4 model
    * `Gemini`: Google Gemini Model
+   * `gpt-4-web-search`: GPT-4 with web search capability (requires OpenAI API key)
+   * `gpt-4-mini-web-search`: Smaller GPT-4 model with web search (requires OpenAI API key)
+
 ### Special Features
 
 #### Switch Persona
