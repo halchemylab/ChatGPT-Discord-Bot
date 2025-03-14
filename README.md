@@ -116,9 +116,6 @@
 
 * Set the value of `LOGGING` in the `.env` to False
 
-------
->  [**中文設置教學**](https://zero6992.me/2023/03/08/chatGPT-discord-bot-chinese/)
-------
 ## Commands
 
 * `/chat [message]` Chat with ChatGPT/Gemini
@@ -140,29 +137,3 @@
    * `gpt-4-web-search`: GPT-4 with web search capability (requires OpenAI API key)
    * `gpt-4-mini-web-search`: Smaller GPT-4 model with web search (requires OpenAI API key)
 
-### Special Features
-
-#### Switch Persona
-
-> **Warning**
->
-> Certain personas may generate vulgar or disturbing content. Use at your own risk.
-
-![image](https://user-images.githubusercontent.com/91911303/223772334-7aece61f-ead7-4119-bcd4-7274979c4702.png)
-
-
-#### Mode
-
-* `public mode (default)`  the bot directly reply on the channel
-
-  ![image](https://user-images.githubusercontent.com/89479282/206565977-d7c5d405-fdb4-4202-bbdd-715b7c8e8415.gif)
-
-* `private mode` the bot's reply can only be seen by the person who used the command
-
-  ![image](https://user-images.githubusercontent.com/89479282/206565873-b181e600-e793-4a94-a978-47f806b986da.gif)
-
-* `replyall mode` the bot will reply to all messages in the channel without using slash commands (`/chat` will also be unavailable)
-
-   > **Warning**
-   > The bot will easily be triggered in `replyall` mode, which could cause program failures
- ---
