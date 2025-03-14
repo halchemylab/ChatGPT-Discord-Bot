@@ -108,6 +108,12 @@ def run_discord_bot():
                 discordClient.reset_conversation_history()
                 discordClient.chatBot = Client(provider=RetryProvider([FreeGpt, ChatgptNext, AItianhuSpace], shuffle=False))
                 discordClient.chatModel = model.value
+            elif model.value in ["gpt-4o-search-preview", "gpt-4o-mini-search-preview"]:
+                if os.getenv("OPENAI_ENABLED") != "True":
+                    await interaction.followup.send("> **ERROR: Web search models require OpenAI API to be enabled. Please set OPENAI_ENABLED=True in .env**")
+                    return
+                discordClient.reset_conversation_history()
+                discordClient.chatModel = model.value
 
             await interaction.followup.send(f"> **INFO: Chat model switched to {model.name}.**")
             logger.info(f"Switched chat model to {model.name}")
@@ -115,6 +121,7 @@ def run_discord_bot():
         except Exception as e:
             await interaction.followup.send(f'> **Error Switching Model: {e}**')
             logger.error(f"Error switching chat model: {e}")
+
 
     @discordClient.tree.command(name="reset", description="Complete reset conversation history")
     async def reset(interaction: discord.Interaction):
